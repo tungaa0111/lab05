@@ -1,0 +1,133 @@
+newman
+
+Lab05 API Testing
+
+□ Test 1 - Register - Happy Path
+└ Setup Course CS201
+  PUT http://localhost:3000/courses/CS201 [200 OK, 178B, 18ms]
+
+└ Setup Student B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 3ms]
+
+└ Register - Happy Path
+  POST http://localhost:3000/registrations [201 Created, 202B, 4ms]
+  √  HTTP status 201
+  1. Deliberately incorrect oracle
+
+□ Test 2 - Register - Inactive Student
+└ Setup Course CS201
+  PUT http://localhost:3000/courses/CS201 [200 OK, 178B, 3ms]
+
+└ Setup Student B231234568
+  PUT http://localhost:3000/students/B231234568 [200 OK, 178B, 2ms]
+
+└ Register - Inactive Student
+  POST http://localhost:3000/registrations [200 OK, 198B, 5ms]
+  √  HTTP status 200
+  √  Result ERROR_INACTIVE_STUDENT
+
+□ Test 3 - Register - Missing Field
+└ Setup Student B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 3ms]
+
+└ Register - Missing Field
+  POST http://localhost:3000/registrations [400 Bad Request, 202B, 2ms]
+  √  HTTP status 400
+  √  Result ERROR_BAD_REQUEST
+
+□ Test 4 - Register - No Course
+└ Setup Student B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 1ms]
+
+└ Register - No Course
+  POST http://localhost:3000/registrations [200 OK, 191B, 2ms]
+  √  HTTP status 200
+  √  Result ERROR_NO_COURSE
+
+□ Test 5 - Register - No Prerequisites
+└ Setup Course CS201
+  PUT http://localhost:3000/courses/CS201 [200 OK, 178B, 4ms]
+
+└ Setup Student B231234570
+  PUT http://localhost:3000/students/B231234570 [200 OK, 178B, 2ms]
+
+└ Register - No Prerequisites
+  POST http://localhost:3000/registrations [201 Created, 202B, 5ms]
+  √  HTTP status 201
+  √  Result OK
+
+□ Test 6 - Register - No Student
+└ Setup Course CS201
+  PUT http://localhost:3000/courses/CS201 [200 OK, 178B, 2ms]
+
+└ Register - No Student
+  POST http://localhost:3000/registrations [200 OK, 192B, 1ms]
+  √  HTTP status 200
+  √  Result ERROR_NO_STUDENT
+
+□ Test 7 - Register - Prerequisites Met
+└ Setup Course CS301
+  PUT http://localhost:3000/courses/CS301 [200 OK, 178B, 3ms]
+
+└ Setup Student B231234567
+  PUT http://localhost:3000/students/B231234567 [200 OK, 178B, 1ms]
+
+└ Register - Prerequisites Met
+  POST http://localhost:3000/registrations [201 Created, 202B, 2ms]
+  √  HTTP status 201
+  √  Result OK
+
+□ Test 8 - Register - Prerequisites Not Met
+└ Setup Course CS301
+  PUT http://localhost:3000/courses/CS301 [200 OK, 178B, 5ms]
+
+└ Setup Student B231234569
+  PUT http://localhost:3000/students/B231234569 [200 OK, 178B, 2ms]
+
+└ Register - Prerequisites Not Met
+  POST http://localhost:3000/registrations [200 OK, 215B, 1ms]
+  √  HTTP status 200
+  √  Result ERROR_PREREQUISITES
+  √  Missing prerequisite CS201
+
+□ Test 9 - Register - Double Error No Student and No Course
+└ Register - Double Error No Student and No Course
+  POST http://localhost:3000/registrations [200 OK, 192B, 3ms]
+  √  HTTP status 200
+  √  Result ERROR_NO_STUDENT
+
+□ Test 10 - Register - Double Error Inactive and No Course
+└ Setup Student B231234568
+  PUT http://localhost:3000/students/B231234568 [200 OK, 178B, 2ms]
+
+└ Register - Double Error Inactive and No Course
+  POST http://localhost:3000/registrations [200 OK, 198B, 1ms]
+  √  HTTP status 200
+  √  Result ERROR_INACTIVE_STUDENT
+
+┌─────────────────────────┬─────────────────┬─────────────────┐
+│                         │        executed │          failed │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              iterations │               1 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│                requests │              24 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│            test-scripts │              10 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│      prerequest-scripts │               0 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              assertions │              21 │               1 │
+├─────────────────────────┴─────────────────┴─────────────────┤
+│ total run duration: 2.6s                                    │
+├─────────────────────────────────────────────────────────────┤
+│ total data received: 550B (approx)                          │
+├─────────────────────────────────────────────────────────────┤
+│ average response time: 3ms [min: 1ms, max: 18ms, s.d.: 3ms] │
+└─────────────────────────────────────────────────────────────┘
+
+[31m  # [39m[31m failure        [39m[31m detail                                                          [39m
+[90m    [39m[90m                [39m[90m                                                                 [39m
+ 1.  AssertionError  Deliberately incorrect oracle                                   
+                     expected 'OK' to deeply equal 'WRONG_RESULT'                    
+                     at assertion:1 in test-script                                   
+                     inside "Test 1 - Register - Happy Path / Register - Happy Path" 

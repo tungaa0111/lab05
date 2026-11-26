@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "newman": "^6.2.3"
+  }
+}

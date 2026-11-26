@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/registrations"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"studentID\": \"B231234569\",\r
+
+    \  \"courseID\": \"CS301\"\r
+
+    }"
+order: 9000

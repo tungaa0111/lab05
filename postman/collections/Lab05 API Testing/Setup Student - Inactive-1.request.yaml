@@ -1,0 +1,14 @@
+$kind: http-request
+name: Setup Student - Inactive
+url: "{{baseUrl}}/students/B231234568"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"status\": \"inactive\",\r
+
+    \  \"coursesTaken\": [\"CS201\"]\r
+
+    }"
+order: 1000
